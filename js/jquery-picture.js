@@ -228,14 +228,14 @@
 				$.each(mediaObj, function(media, path){
 
 					var num;
+					if (0 == media.indexOf('media')) {
+						num = media.replace(/[^\d.]/g, '');
 
-					num = media.replace(/[^\d.]/g, '');
+						if(!num)
+							num = 0;
 
-					if(!num)
-						num = 0;
-
-					sizes[num] = path;
-
+						sizes[num] = path;
+					}
 				});
 
 				if(element.find('img').length == 0){
