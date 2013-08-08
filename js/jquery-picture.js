@@ -34,7 +34,7 @@
 
 		this.each(function(){
 
-			var breakpoints = new Array();
+			var breakpoints = [];
 
 			var windowWidth, currentMedia, element, timeoutOffset;
 
