@@ -54,7 +54,7 @@
 			 * getCurrentMedia
 			 *
 			 * Checks the window width off the media query types and selects the current one.
-			 * Calls the setPicture or setFigure function to set the image.
+			 * Calls the setPicture or setStandard function to set the image.
 			 *
 			 */
 			function getCurrentMedia( init ){
@@ -132,7 +132,7 @@
 					if(element.get(0).tagName.toLowerCase() === 'picture') {
 						setPicture();
 					} else {
-						setFigure();
+						setStandard();
 					}
 
 				}
@@ -167,54 +167,18 @@
 
 				});
 
-				if(element.find('img').length === 0){
-
-					var prep = '<img src="' + sizes[currentMedia] + '"';
-
-					if( element.attr('style') ) {
-						prep += ' style="' + element.attr('style') + '"';
-					}
-
-					if( element.attr('alt') ) {
-						prep += ' alt="' + element.attr('alt') + '"';
-					}
-
-					prep += '>';
-
-					if($(settings.insertElement, element).length === 0){
-
-						element.append(prep);
-
-					}else{
-
-						$(settings.insertElement, element).append(prep);
-
-					}
-
-				}else{
-
-					element.find('img').attr('src', sizes[currentMedia]);
-
-				}
-
-				if( settings.inlineDimensions ) {
-					$("<img/>").attr("src", $('img', element).attr("src")).load(function(){
-						$('img', element).attr('height', this.height);
-						$('img', element).attr('width', this.width);
-					});
-				}
-
+				setImgElements(sizes);
 			}
 
 
 			/**
-			 * setFigure
+			 * setStandard
 			 *
 			 * Pulls the image src and and media values from the data attributes
 			 * and sets the src of the enclosed img tag to the appropriate one.
 			 *
 			 */
-			function setFigure(){
+			function setStandard(){
 
 				var sizes = {};
 
@@ -234,6 +198,19 @@
 					}
 				});
 
+				setImgElements(sizes);
+			}
+
+
+			/**
+			 * setImgElements
+			 *
+			 * creates and sets the correct <img> elements in the DOM
+			 * based on the matching the currently active data attribute
+			 * for the active media query
+			 *
+			 */
+			function setImgElements(sizes) {
 				if(element.find('img').length === 0){
 
 					var prep = '<img src="' + sizes[currentMedia] + '"';
@@ -271,7 +248,6 @@
 					});
 
 				}
-
 			}
 
 		});
