@@ -8,7 +8,8 @@
 			ignorePixelRatio: false,
 			useLarger: false,
 			insertElement: '>a',
-			inlineDimensions: false
+			inlineDimensions: false,
+			useCSSBackgrounds: false
 
         };
 
@@ -198,7 +199,12 @@
 					}
 				});
 
-				setImgElements(sizes);
+				if (settings.useCSSBackgrounds) {
+
+				} else {
+					setImgElements(sizes);
+				}
+
 			}
 
 
