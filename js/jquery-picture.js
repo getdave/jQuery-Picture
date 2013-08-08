@@ -15,7 +15,7 @@
 
 		var settings = $.extend({}, defaults, args);
 
-		this.each(function(){
+		return this.each(function(){
 
 			var breakpoints = [];
 
