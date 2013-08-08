@@ -262,12 +262,7 @@
 				}
 
 				if(settings.inlineDimensions){
-
-					$("<img/>").attr("src", $('img', element).attr("src")).load(function(){
-						$('img', element).attr('height', this.height);
-						$('img', element).attr('width', this.width);
-					});
-
+					getImageDimensions(sizes[currentMedia], setElementDimensions);
 				}
 			}
 
@@ -279,6 +274,9 @@
 			 * element based on the dimensions provided
 			 */
 			function setElementDimensions(dimensions) {
+				if (!settings.useCSSBackgrounds) {
+					element.width(dimensions.width);
+				}
 				element.height(dimensions.height);
 			}
 
