@@ -160,6 +160,13 @@ figure img {
 picture img {
   width: 100%;
 }
+
+.standard--cssbgs {
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: contain;
+}
+
 figcaption {
   margin: 0;
   padding: 0;
