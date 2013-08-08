@@ -200,11 +200,16 @@
 				});
 
 				if (settings.useCSSBackgrounds) {
-
+					setCSSBackgrounds(sizes);
 				} else {
 					setImgElements(sizes);
 				}
 
+			}
+
+
+			function setCSSBackgrounds(sizes) {
+				element.css('background-image', 'url(' + sizes[currentMedia] + ')');
 			}
 
 
