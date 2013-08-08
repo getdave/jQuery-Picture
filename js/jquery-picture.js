@@ -8,13 +8,14 @@
 			ignorePixelRatio: false,
 			useLarger: false,
 			insertElement: '>a',
-			inlineDimensions: false
+			inlineDimensions: false,
+			useCSSBackgrounds: false
 
         };
 
 		var settings = $.extend({}, defaults, args);
 
-		this.each(function(){
+		return this.each(function(){
 
 			var breakpoints = [];
 
@@ -54,31 +55,14 @@
 			 * getCurrentMedia
 			 *
 			 * Checks the window width off the media query types and selects the current one.
-			 * Calls the setPicture or setFigure function to set the image.
+			 * Calls the setPicture or setStandard function to set the image.
 			 *
 			 */
 			function getCurrentMedia( init ){
 
 				if(init){
 
-					if(element.get(0).tagName.toLowerCase() === 'figure'){
-
-						var mediaObj = element.data();
-
-						$.each(mediaObj, function(media){
-
-							var num;
-
-							num = media.replace(/[^\d.]/g, '');
-
-							if(num) {
-								breakpoints.push(parseInt(num, 10));
-							}
-
-						});
-
-					}else{
-
+					if(element.get(0).tagName.toLowerCase() === 'picture'){
 						element.find('source').each(function(){
 
 							var media, num;
@@ -94,6 +78,20 @@
 
 						});
 
+					} else {
+						var mediaObj = element.data();
+
+						$.each(mediaObj, function(media){
+
+							var num;
+
+							num = media.replace(/[^\d.]/g, '');
+
+							if(num) {
+								breakpoints.push(parseInt(num, 10));
+							}
+
+						});
 					}
 					breakpoints.sort(function(a,b){
 						return a - b;
@@ -132,10 +130,10 @@
 				if(currentMedia !== c){
 					currentMedia = c;
 
-					if(element.get(0).tagName.toLowerCase() === 'figure') {
-						setFigure();
-					} else {
+					if(element.get(0).tagName.toLowerCase() === 'picture') {
 						setPicture();
+					} else {
+						setStandard();
 					}
 
 				}
@@ -170,54 +168,18 @@
 
 				});
 
-				if(element.find('img').length === 0){
-
-					var prep = '<img src="' + sizes[currentMedia] + '"';
-
-					if( element.attr('style') ) {
-						prep += ' style="' + element.attr('style') + '"';
-					}
-
-					if( element.attr('alt') ) {
-						prep += ' alt="' + element.attr('alt') + '"';
-					}
-
-					prep += '>';
-
-					if($(settings.insertElement, element).length === 0){
-
-						element.append(prep);
-
-					}else{
-
-						$(settings.insertElement, element).append(prep);
-
-					}
-
-				}else{
-
-					element.find('img').attr('src', sizes[currentMedia]);
-
-				}
-
-				if( settings.inlineDimensions ) {
-					$("<img/>").attr("src", $('img', element).attr("src")).load(function(){
-						$('img', element).attr('height', this.height);
-						$('img', element).attr('width', this.width);
-					});
-				}
-
+				setImgElements(sizes);
 			}
 
 
 			/**
-			 * setFigure
+			 * setStandard
 			 *
 			 * Pulls the image src and and media values from the data attributes
 			 * and sets the src of the enclosed img tag to the appropriate one.
 			 *
 			 */
-			function setFigure(){
+			function setStandard(){
 
 				var sizes = {};
 
@@ -237,6 +199,39 @@
 					}
 				});
 
+				if (settings.useCSSBackgrounds) {
+					setCSSBackgrounds(sizes);
+				} else {
+					setImgElements(sizes);
+				}
+
+			}
+
+			/**
+			 * setCSSBackgrounds 
+			 *
+			 * sets a CSS background-image attribute to the
+			 * corretc image src based on the the current
+			 * match data attribute
+			 */
+			function setCSSBackgrounds(sizes) {
+				element.css('background-image', 'url(' + sizes[currentMedia] + ')');
+
+				if(settings.inlineDimensions){
+					getImageDimensions(sizes[currentMedia], setElementDimensions);
+				}
+			}
+
+			
+			/**
+			 * setImgElements
+			 *
+			 * creates and sets the correct <img> elements in the DOM
+			 * based on the matching the currently active data attribute
+			 * for the active media query
+			 *
+			 */
+			function setImgElements(sizes) {
 				if(element.find('img').length === 0){
 
 					var prep = '<img src="' + sizes[currentMedia] + '"';
@@ -267,14 +262,45 @@
 				}
 
 				if(settings.inlineDimensions){
-
-					$("<img/>").attr("src", $('img', element).attr("src")).load(function(){
-						$('img', element).attr('height', this.height);
-						$('img', element).attr('width', this.width);
-					});
-
+					getImageDimensions(sizes[currentMedia], setElementDimensions);
 				}
+			}
 
+
+			/**
+			 * setElementDimensions
+			 *
+			 * sets the dimensions (currently height only) of the
+			 * element based on the dimensions provided
+			 */
+			function setElementDimensions(dimensions) {
+				if (!settings.useCSSBackgrounds) {
+					element.width(dimensions.width);
+				}
+				element.height(dimensions.height);
+			}
+
+
+			/**
+			 * getImageDimensions
+			 *
+			 * returns the dimensions of the image once it has fully loaded.
+			 * Runs async callback and pasisng dimesnsions as argument
+			 */
+			function getImageDimensions(src, callback) {
+				var image = new Image();
+
+				$(image).on('load', function(event) {
+					var dimensions = {
+						width: event.target.width, // pass "width" just in case even though it's not currently utilized
+						height: event.target.height
+					};
+
+					callback.call(this, dimensions);
+				});
+
+				// Set the image src after the .load() else it won't work!
+				image.src = src;
 			}
 
 		});
