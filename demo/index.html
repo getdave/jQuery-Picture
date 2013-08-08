@@ -18,14 +18,15 @@
 
 	<script type="text/javascript" src="assets/js/modernizr.js"></script>
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/jquery-picture.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-picture.js"></script>
 
     <script type="text/javascript">
     $(function(){
         $('.standard, picture').picture();
 
         $('.standard--cssbgs').picture({
-            useCSSBackgrounds: true
+            useCSSBackgrounds: true,
+            inlineDimensions: true
         });
 
         $('.plug > a').click(function(){

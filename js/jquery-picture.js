@@ -207,12 +207,22 @@
 
 			}
 
-
+			/**
+			 * setCSSBackgrounds 
+			 *
+			 * sets a CSS background-image attribute to the
+			 * corretc image src based on the the current
+			 * match data attribute
+			 */
 			function setCSSBackgrounds(sizes) {
 				element.css('background-image', 'url(' + sizes[currentMedia] + ')');
+
+				if(settings.inlineDimensions){
+					getImageDimensions(sizes[currentMedia], setElementDimensions);
+				}
 			}
 
-
+			
 			/**
 			 * setImgElements
 			 *
@@ -259,6 +269,40 @@
 					});
 
 				}
+			}
+
+
+			/**
+			 * setElementDimensions
+			 *
+			 * sets the dimensions (currently height only) of the
+			 * element based on the dimensions provided
+			 */
+			function setElementDimensions(dimensions) {
+				element.height(dimensions.height);
+			}
+
+
+			/**
+			 * getImageDimensions
+			 *
+			 * returns the dimensions of the image once it has fully loaded.
+			 * Runs async callback and pasisng dimesnsions as argument
+			 */
+			function getImageDimensions(src, callback) {
+				var image = new Image();
+
+				$(image).on('load', function(event) {
+					var dimensions = {
+						width: event.target.width, // pass "width" just in case even though it's not currently utilized
+						height: event.target.height
+					};
+
+					callback.call(this, dimensions);
+				});
+
+				// Set the image src after the .load() else it won't work!
+				image.src = src;
 			}
 
 		});

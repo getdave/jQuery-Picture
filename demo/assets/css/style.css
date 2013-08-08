@@ -162,7 +162,6 @@ picture img {
 }
 
 .standard--cssbgs {
-  height: 600px;
   background-repeat: no-repeat;
   background-position: 0 0;
   background-size: contain;
