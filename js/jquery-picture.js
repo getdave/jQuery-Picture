@@ -1,21 +1,3 @@
-/**
- * jQuery Picture
- * http://jquerypicture.com
- * http://github.com/Abban/jQuery-Picture
- *
- * May 2012
- *
- * @version 0.9
- * @author Abban Dunne http://abandon.ie
- * @license MIT
- *
- * jQuery Picture is a plugin to add support for responsive images to your layouts.
- * It supports both figure elements with some custom data attributes and the new
- * proposed picture format. This plugin will be made redundant when the format is
- * approved and implemented by browsers. Lets hope that happens soon. In the meantime
- * this plugin will be kept up to date with latest developments.
- *
- */
 (function($){
 
 	$.fn.picture = function(args){

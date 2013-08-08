@@ -40,7 +40,8 @@ module.exports = function(grunt) {
         uglify: {
             dist: {
                 options: {
-                    sourceMap: 'js/map/source-map.js'
+                    sourceMap: 'js/map/source-map.js',
+                    banner: grunt.file.read('banner.txt')
                 },
                 files: {
                     'js/jquery-picture.min.js': [

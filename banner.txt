@@ -1,0 +1,18 @@
+/**
+ * jQuery Picture
+ * http://jquerypicture.com
+ * https://github.com/getdave/jQuery-Picture
+ *
+ * <%= grunt.template.today("dd-mm-yyyy") %>
+ *
+ * @version 2.0.0
+ * @author David Smith (based on excellent original work by Abban Dunne http://abandon.ie)
+ * @license MIT
+ *
+ * jQuery Picture is a plugin to add support for responsive images to your layouts.
+ * It supports both figure elements with some custom data attributes and the new
+ * proposed picture format. This plugin will be made redundant when the format is
+ * approved and implemented by browsers. Lets hope that happens soon. In the meantime
+ * this plugin will be kept up to date with latest developments.
+ *
+ */
